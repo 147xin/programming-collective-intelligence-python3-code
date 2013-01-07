@@ -32,7 +32,7 @@ def sim_distance(prefs,person1,person2):
   if len(si)==0: return 0
 
   # Add up the squares of all the differences
-  sum_of_squares=sum([pow(prefs[person1][item]-prefs[person2][item],2) 
+  sum_of_squares=sum([pow(prefs[person1][item]-prefs[person2][item], 2) 
                       for item in prefs[person1] if item in prefs[person2]])
 
   return 1/(1+sum_of_squares)
@@ -55,15 +55,15 @@ def sim_pearson(prefs,p1,p2):
   sum2=sum([prefs[p2][it] for it in si])
   
   # Sums of the squares
-  sum1Sq=sum([pow(prefs[p1][it],2) for it in si])
-  sum2Sq=sum([pow(prefs[p2][it],2) for it in si])	
+  sum1Sq=sum([prefs[p1][it]**2 for it in si])
+  sum2Sq=sum([prefs[p2][it]**2 for it in si])	
   
   # Sum of the products
   pSum=sum([prefs[p1][it]*prefs[p2][it] for it in si])
   
   # Calculate r (Pearson score)
   num=pSum-(sum1*sum2/n)
-  den=sqrt((sum1Sq-pow(sum1,2)/n)*(sum2Sq-pow(sum2,2)/n))
+  den=sqrt((sum1Sq-sum1**2/n)*(sum2Sq-sum2**2/n))
   if den==0: return 0
 
   r=num/den
@@ -75,9 +75,9 @@ def sim_pearson(prefs,p1,p2):
 def topMatches(prefs,person,n=5,similarity=sim_pearson):
   scores=[(similarity(prefs,person,other),other) 
                   for other in prefs if other!=person]
-  scores.sort()
-  scores.reverse()
+  scores.sort(reverse=True)
   return scores[0:n]
+
 
 # Gets recommendations for a person by using a weighted average
 # of every other user's rankings
@@ -131,7 +131,7 @@ def calculateSimilarItems(prefs,n=10):
   for item in itemPrefs:
     # Status updates for large datasets
     c+=1
-    if c%100==0: print "%d / %d" % (c,len(itemPrefs))
+    if c%100==0: print( "%d / %d" % (c,len(itemPrefs)) )
     # Find the most similar items to this one
     scores=topMatches(itemPrefs,item,n=n,similarity=sim_distance)
     result[item]=scores
