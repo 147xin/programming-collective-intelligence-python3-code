@@ -106,8 +106,7 @@ def getRecommendations(prefs,person,similarity=sim_pearson):
   rankings=[(total/simSums[item],item) for item,total in totals.items()]
 
   # Return the sorted list
-  rankings.sort()
-  rankings.reverse()
+  rankings.sort(reverse=True)
   return rankings
 
 def transformPrefs(prefs):
